@@ -4,12 +4,12 @@ class Home extends React.Component {
 
     render () {
 
-        console.log(localStorage.getItem('token'));
         
         return (
             <div>
                 <h1>Личный кабинет</h1>
-                <button onClick={this.props.logout}>Выйти</button>
+                <button onClick={ this.props.logout }>Выйти</button>
+                <button>Выйти</button>
                 <p>token:  </p>
             </div>
         )

@@ -10,6 +10,7 @@ import './App.css';
 export class App extends React.Component {
   state = {
     authorized: false,
+    userName: ''
   }
 
   login = () => {
@@ -20,12 +21,23 @@ export class App extends React.Component {
 
 
   logout = () => {
+    localStorage.removeItem('token')
     this.setState({
       authorized: false,
     })
   }
 
+  handlerUsername = (name) => {
+    this.setState({
+      userName: name
+    })
+  }
+
+  
+
   render () {
+    
+
     const { authorized } = this.state;
 
     return (

@@ -8,8 +8,13 @@ class Login extends React.Component {
     state = {
         login: '',
         password: '',
-        responseStatus: ''
+        responseStatus: '',
+
     } 
+
+    componentDidMount() {
+        this.checkToken();
+    }
 
     handleLoginChange = (event) => {
        this.setState({login: event.target.value})
@@ -33,11 +38,23 @@ class Login extends React.Component {
     }
 
     checkToken = () => {
-        fetch(``)
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
+    
+        let requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+    
+        fetch("https://localhost:44381/api/account", requestOptions)
+          .then(response => this.handleResponseStatus(response.status))
+          //.then(response => response.text())
+          //.then(result => response = result)
+          .catch(error => console.log('error', error));
     }
 
     render () {
-        
         if(this.state.responseStatus === 200){
             this.props.login();
         }
