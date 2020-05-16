@@ -1,15 +1,23 @@
 import React from "react";
 import { Redirect } from "react-router";
 
-const style = {
 
-}
 
 class Login extends React.Component {
-
+    
+   
     getToken = function () {
-        let token = fetch()
+        fetch('https://localhost:44381/api/user/login?username=user5@mail.ru&password=pas', 
+            {
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            } )
+            .then(response => response.json())
+            .then(json => console.log(json))
     }
+        
 
     render () {
         if (this.props.authorized) {
@@ -21,7 +29,8 @@ class Login extends React.Component {
                 <h1>Авторизация</h1>
                 <input type="text"></input>
                 <input type="text"></input>
-                <button type="button" onClick={this.props.login}>Войти</button>
+                {/* <button type="button" onClick={this.props.login}>Войти</button> */}
+                <button type="button" onClick={this.getToken}>Войти</button>
             </div>
         );
     }
