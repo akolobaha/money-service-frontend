@@ -5,18 +5,16 @@ import { Redirect } from "react-router";
 
 class Login extends React.Component {
     
+    
    
+
     getToken = function () {
-        fetch('https://localhost:44381/api/user/login?username=user5@mail.ru&password=pas', 
-            {
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            } )
+        let token = 'token test';
+        fetch('https://localhost:44381/api/user/login?username=user5@mail.ru&password=pas')
             .then(response => response.json())
-            .then(json => console.log(json))
+            .then(json => console.log(json.token))
     }
+
         
 
     render () {
@@ -29,8 +27,11 @@ class Login extends React.Component {
                 <h1>Авторизация</h1>
                 <input type="text"></input>
                 <input type="text"></input>
-                {/* <button type="button" onClick={this.props.login}>Войти</button> */}
+                <button type="button" onClick={this.props.login}>Войти</button>
                 <button type="button" onClick={this.getToken}>Войти</button>
+
+                <button onClick={() => { this.props.updateTkn('token from child') }} />
+                <p>{ this.props.tkn }</p>
             </div>
         );
     }

@@ -10,7 +10,7 @@ import './App.css';
 export class App extends React.Component {
   state = {
     authorized: false,
-    tokken: "",
+    token: "token from parent",
   }
 
   login = () => {
@@ -18,6 +18,12 @@ export class App extends React.Component {
       authorized: true,
     })
   }
+
+  UpdateToken = (value) => {
+    this.setState ({
+      token: value
+    })
+  } 
 
   logout = () => {
     this.setState({
@@ -37,7 +43,8 @@ export class App extends React.Component {
             </PrivateRoute>
 
             <Route exact path="/login">
-              <Login login={this.login} authorized={authorized}></Login>
+              {/* <Login login={this.login} token={this.token} authorized={authorized}></Login> */}
+              <Login login={this.login} tkn={this.state.token} updateTkn={this.UpdateToken}></Login>
             </Route>
 
             <Route exact path="/signup">
