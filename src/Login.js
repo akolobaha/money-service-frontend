@@ -74,11 +74,8 @@ class Login extends React.Component {
 
                 <button type="button" onClick={() => this.getToken()}>Войти</button>
 
-                <button onClick={() => { this.getToken()}}>Tkn from child</button><br></br>
 
 
-                <button  onClick={() => this.props.login()}>Just login</button><br></br>
-                <p>{ this.props.tkn }</p>
             </div>
         );
     }
