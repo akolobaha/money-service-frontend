@@ -2,14 +2,19 @@ import React from "react";
 
 class Home extends React.Component {
     state = {
-        userData: {},
+        userName: '',
+        userAccounts: {},
     }
 
     
 
-    userDataChange (data) {
-        this.setState({ userData: data }) 
-    }  
+    userName (name) {
+        this.setState({ userName: name }) 
+    } 
+    
+    userAccounts(accounts) {
+        this.setState({ userAccounts: accounts })
+    }
 
     checkToken = () => {
         let myHeaders = new Headers();
@@ -22,10 +27,12 @@ class Home extends React.Component {
         };
     
         fetch("https://localhost:44381/api/account/", requestOptions)
-        //fetch("https://jsonplaceholder.typicode.com/todos/1", requestOptions)
           .then(response => response.text())
           .then(text => JSON.parse(text))
-          .then(result => this.userDataChange(result))
+          .then(result => {
+            this.userName(result.username)
+            this.userAccounts(result.accounts)
+          })
           .catch(error => console.log('error', error));
     }
 
@@ -33,25 +40,30 @@ class Home extends React.Component {
         this.checkToken();
     }
 
-    getAccountsList() {
-        // for(let key in this.state.userData.accounts){
-
-        // }
+    totalMoney () {
+        let accountsSum = Object.values(this.state.userAccounts);
+        let sum = 0;
+        accountsSum.forEach((val) => {
+            sum += val
+        })
+        return sum;
     }
+
+    
+        
+    
 
 
     render () {
-
+     
+       
         
         return (
             <div>
                 <h1>Личный кабинет</h1>
-                <h2>{ this.state.userData.username }</h2>
-
+                <h2>{ this.state.userName }</h2>
+                <h4>Общая сумма: {this.totalMoney()}</h4>
                 <p>
-                    {
-                        
-                    }
 
                 </p>
 
