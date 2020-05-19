@@ -36,8 +36,6 @@ export class App extends React.Component {
   
 
   render () {
-    
-
     const { authorized } = this.state;
 
     return (

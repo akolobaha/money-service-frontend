@@ -1,9 +1,11 @@
 import React from "react";
+import { PrivateHeader } from './components/PrivateHeader'
 
 class Home extends React.Component {
     state = {
         userName: '',
         userAccounts: {},
+        totalMoney: 0,
     }
 
     
@@ -14,6 +16,10 @@ class Home extends React.Component {
     
     userAccounts(accounts) {
         this.setState({ userAccounts: accounts })
+    }
+
+    totalMoneySet(money) {
+        
     }
 
     checkToken = () => {
@@ -44,29 +50,40 @@ class Home extends React.Component {
         let accountsSum = Object.values(this.state.userAccounts);
         let sum = 0;
         accountsSum.forEach((val) => {
+            console.log(val)
             sum += val
         })
-        return sum;
+        return sum
     }
 
-    
-        
-    
+ 
 
-
-    render () {
-     
-       
-        
+    render () { 
         return (
             <div>
-                <h1>Личный кабинет</h1>
-                <h2>{ this.state.userName }</h2>
-                <h4>Общая сумма: {this.totalMoney()}</h4>
-                <p>
+                
+                <PrivateHeader totalMoney={this.totalMoney()} userName={this.state.userName} />
+                {
+                    Object.keys(this.state.userAccounts).map(balance => (
+                        <div key={balance}>
+                            {this.state.userAccounts[balance]}
+                        </div>
+                    ))
+                    
+                }
 
-                </p>
-
+                {
+                    Object.keys(this.state.userAccounts).map(account => (
+                            <div key="account">
+                                {account}
+                            </div>
+                    ))
+                    
+                }
+                
+                
+                
+                
                 <button onClick={ this.props.logout }>Выйти</button>
                 <button onClick={ this.checkToken }>Get login</button>
             </div>
