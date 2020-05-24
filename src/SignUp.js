@@ -26,10 +26,6 @@ class SignUp extends React.Component {
 
         return (
             <div>
-                <h1>Регистрация</h1>
-                <button type="button" onClick={this.props.login}>Войти</button>
-                <hr></hr>
-
                 <div className="row">
                     <div className="col-4 offset-4">
                     <h1 className="text-center mt-5 mb-3">Регистрация</h1>

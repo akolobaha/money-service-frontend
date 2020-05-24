@@ -18,10 +18,6 @@ class Home extends React.Component {
         fetch("https://localhost:44381/api/account/", requestOptions)
           .then(response => response.text())
           .then(text => JSON.parse(text))
-          //.then(result => {
-            //this.userName(result.username)
-            //this.userAccounts(result.accounts)
-          //})
           .catch(error => console.log('error', error));
     }
 
@@ -38,13 +34,7 @@ class Home extends React.Component {
             return user.accounts.map((acc) => {
                 return <option key={acc.number} >{acc.number}</option>
             })
-            
-            // user.accounts.map(acc => {
-            //     console.log(acc.number)
-            //     return <li>{acc.number}</li>
-            // })
         })
-        
     }
 
     handleChangeAccount = (event) => {
@@ -65,9 +55,6 @@ class Home extends React.Component {
         accField.innerHTML = `Счет: ${event.target.value}`;
         balanceField.innerHTML = `Баланс: ${selectedBalance[0].balance}`;
 
-        this.props.select('sele')
-        console.log(this.props.select)
-        return <h2>Hello</h2>
     }
 
     handleCreateAccount = () => {
@@ -89,7 +76,7 @@ class Home extends React.Component {
 
     handleRefillAccount = (event) => {
         event.preventDefault();
-        
+
         let amount = String(event.target.querySelector('input').value);
         let account = String(document.querySelector('.accounts-list').value);
 
@@ -106,8 +93,33 @@ class Home extends React.Component {
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
+
+            window.location.reload();
         }
 
+    handleMoneyTransfer = (event) => {
+        event.preventDefault();
+
+        let amount = event.target.querySelector('[name="amount"]').value
+        let accountA = String(document.querySelector('.accounts-list').value);
+        let accountB = event.target.querySelector('[name="account"]').value
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
+
+        var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+
+        fetch(`https://localhost:44381/api/account/transfer?accnuma=${accountA}&accnumb=${accountB}&amount=${amount}`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+        window.location.reload();
+    }
 
     componentDidMount () {
         this.checkToken();
@@ -117,7 +129,7 @@ class Home extends React.Component {
     render () { 
         
         return (
-            <div className="container">
+            <div className="container ">
                 <header className="pt-4">
                     <div className="row">
                         <div className="col-5">
@@ -133,7 +145,6 @@ class Home extends React.Component {
                         </div>
                         <div className="col-2 text-right">
                             <button className="btn btn-danger" onClick={ this.props.logout }>Выйти</button>
-                            <button onClick={ this.checkToken }>Get login</button>
                         </div>
                     </div>
                     <hr></hr>
@@ -142,15 +153,35 @@ class Home extends React.Component {
                 <div>
                     <div className="row">
                         <div className="col-9">
-                            <h3 className="account">Счет не выбран</h3> 
-                            <h4 className="balance"> </h4>
                             <div className="row">
+                                <div className="col-6"><h3 className="account">Счет не выбран</h3> </div>
+                                <div className="col-6"><h4 className="balance"> </h4></div>
+                            </div>
+                            
+                            
+                            <hr></hr>
+                            <div className="row">
+                                <div className="col-6 bg-secondary p-3">
+                                    <h5>Пополнить баланс:</h5>
                                 <form onSubmit={this.handleRefillAccount}>
-                                    <input type="number" className="form-control" placeholder="Сумма пополнения"></input>
+                                    <input type="number" className="form-control my-3" placeholder="Сумма пополнения"></input>
                                     
-                                        <button className="btn btn-success" type="submit" onClick={() => this.props.select('123')}>Пополнить</button>
+                                        <button className="btn btn-success w-100" type="submit">Пополнить</button>
                                     
                                 </form>
+                                </div>
+                                <div className="col-6 bg-primary p-3">
+                                    <h5>Перевести:</h5>
+
+                                    <form onSubmit={this.handleMoneyTransfer}>
+                                    <input type="number" name="amount" className="form-control my-3" placeholder="Сумма перевода"></input>
+
+                                    <input type="number" name="account" className="form-control my-3" placeholder="Счет зачисления"></input>
+
+                                    <button className="btn btn-success w-100" type="submit">Перевести</button>
+                                    </form>
+                                </div>
+                                
                             </div>
                             
                             <hr></hr>
