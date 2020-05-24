@@ -65,8 +65,8 @@ class Home extends React.Component {
         accField.innerHTML = `Счет: ${event.target.value}`;
         balanceField.innerHTML = `Баланс: ${selectedBalance[0].balance}`;
 
-        
-        
+        this.props.select('sele')
+        console.log(this.props.select)
         return <h2>Hello</h2>
     }
 
@@ -89,9 +89,24 @@ class Home extends React.Component {
 
     handleRefillAccount = (event) => {
         event.preventDefault();
-        let formValue = event.target.querySelector('input').value;
-        console.log(formValue)
-    }
+        
+        let amount = String(event.target.querySelector('input').value);
+        let account = String(document.querySelector('.accounts-list').value);
+
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
+
+            var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+            };
+
+            fetch(`https://localhost:44381/api/account/refill?accnum=${account}&amount=${amount}`, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+        }
 
 
     componentDidMount () {
@@ -141,7 +156,7 @@ class Home extends React.Component {
                             <hr></hr>
                         </div>
                         <div className="col-3 text-right">
-                            <select className="form-control" onChange={this.handleChangeAccount}>
+                            <select className="form-control accounts-list" onChange={this.handleChangeAccount}>
                             <option selected disabled>Выберите счет</option>
                                 {
                                     this.accountsList()
