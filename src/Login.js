@@ -64,15 +64,26 @@ class Login extends React.Component {
         }
 
         return (
-            <div>
-                <h1>Авторизация</h1>
-                <input type="text" name="login" placeholder="Login" value={this.state.handleLoginChange} onChange={this.handleLoginChange}></input>
-                <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input>
+            <div className="container">
+                <div className="row">
+                    <div className="col-4 offset-4">
+                    <h1 className="text-center mt-5 mb-3">Авторизация</h1>
+                    <input className="form-control mb-2" type="text" name="login" placeholder="Login" value={this.state.handleLoginChange} onChange={this.handleLoginChange}></input>
+                    <input className="form-control"  type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input>
+                    <button className="btn btn-success mt-2 w-100" type="button" onClick={() => this.getToken()}>Войти</button>
+                    <div className="text-center mt-2">
+                        <a  href="/signup">Регистрация</a>
+                    </div>
+                    
+                    </div>
+                </div>
+                
+                
                 {/* <button type="button" onClick={this.props.login}>Войти</button> */}
                 <p> {localStorage.getItem('token')} </p>
 
 
-                <button type="button" onClick={() => this.getToken()}>Войти</button>
+                
 
 
 

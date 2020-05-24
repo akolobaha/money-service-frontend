@@ -18,10 +18,10 @@ class Home extends React.Component {
         fetch("https://localhost:44381/api/account/", requestOptions)
           .then(response => response.text())
           .then(text => JSON.parse(text))
-          .then(result => {
+          //.then(result => {
             //this.userName(result.username)
-            this.userAccounts(result.accounts)
-          })
+            //this.userAccounts(result.accounts)
+          //})
           .catch(error => console.log('error', error));
     }
 
@@ -66,7 +66,31 @@ class Home extends React.Component {
         balanceField.innerHTML = `Баланс: ${selectedBalance[0].balance}`;
 
         
+        
         return <h2>Hello</h2>
+    }
+
+    handleCreateAccount = () => {
+
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
+    
+        let requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+        fetch(`https://localhost:44381/api/account/create`, requestOptions)
+            .then(response => response.text())
+            .catch(error => console.log('error', error));
+        this.checkToken()
+        this.props.getAllUsers()
+    }
+
+    handleRefillAccount = (event) => {
+        event.preventDefault();
+        let formValue = event.target.querySelector('input').value;
+        console.log(formValue)
     }
 
 
@@ -76,6 +100,7 @@ class Home extends React.Component {
     }
 
     render () { 
+        
         return (
             <div className="container">
                 <header className="pt-4">
@@ -87,7 +112,7 @@ class Home extends React.Component {
                             <h4>
                                 Пользователь: 
                                 {this.props.users.map((user) => {
-                                    return ( <span>{user.username}</span> )
+                                    return ( <span key={user.username}>{user.username}</span> )
                                 })}
                             </h4>
                         </div>
@@ -103,8 +128,17 @@ class Home extends React.Component {
                     <div className="row">
                         <div className="col-9">
                             <h3 className="account">Счет не выбран</h3> 
-                            <h4 className="balance"></h4>
-                            <button className="btn btn-success" data-toggle="modal" data-target="#exampleModal">Пополнить</button>
+                            <h4 className="balance"> </h4>
+                            <div className="row">
+                                <form onSubmit={this.handleRefillAccount}>
+                                    <input type="number" className="form-control" placeholder="Сумма пополнения"></input>
+                                    
+                                        <button className="btn btn-success" type="submit" onClick={() => this.props.select('123')}>Пополнить</button>
+                                    
+                                </form>
+                            </div>
+                            
+                            <hr></hr>
                         </div>
                         <div className="col-3 text-right">
                             <select className="form-control" onChange={this.handleChangeAccount}>
@@ -113,8 +147,13 @@ class Home extends React.Component {
                                     this.accountsList()
                                 }
                             </select>
+                            <button 
+                                className="btn btn-info mt-3"
+                                onClick={this.handleCreateAccount}
+                            >Создать счет</button>
                         </div>
                     </div>
+                    
                 </div>
                 
                 
@@ -123,7 +162,7 @@ class Home extends React.Component {
             <p></p>
             </div>
 
-            
+
 
 
         )
@@ -134,13 +173,14 @@ class Home extends React.Component {
 function mapStateToProps(state) {
     return {
         users: state.users,
-        activeAcc: state.activeAcc
+        select: state.select
     }
   }
   
   function mapDispatchToProps (dispatch) {
     return {
-      getAllUsers: bindActionCreators(getAllUsers, dispatch)
+      getAllUsers: bindActionCreators(getAllUsers, dispatch),
+      select: bindActionCreators(select, dispatch)
     }
   }
   
