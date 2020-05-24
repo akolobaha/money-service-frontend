@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Home } from "./Home";
+import Home from "./Home";
 import { Login } from "./Login";
 import { SignUp } from "./SignUp";
 import { PrivateRoute } from "./PrivateRoute";
 
 import './App.css';
 
-export class App extends React.Component {
+export class App extends Component {
   state = {
     authorized: false,
     userName: ''
